@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Student {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  phone     String
+  pasword   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  // Representa al estudiante que busca tutorías
+}
+
+model Tutor {
+  id           String   @id @default(uuid())
+  name         String
+  email        String   @unique
+  bio          String?     // Descripción opcional del tutor
+  expertise    String      // Área de especialidad, ej: Matemáticas
+  pasword      String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt()
+  // Representa al tutor disponible para ayudar
+}
+
+model Session {
+  id         String   @id @default(uuid())
+  studentId  String   // ID del estudiante
+  tutorId    String   // ID del tutor
+  topic      String   // Tema tratado en la sesión
+  duration   String   // Duración de la sesión (ej. "30 minutos")
+  createdAt  DateTime @default(now())
+  // Representa una sesión de tutoría entre alumno y tutor
+}
+
+model ForumMessage {
+  id        String   @id @default(uuid())
+  author    String   // Nombre o ID del autor
+  type      String   // "pregunta" o "respuesta"
+  message   String   // Contenido del mensaje
+  createdAt DateTime @default(now())
+  // Mensajes del foro de dudas o respuestas
+}
+
+model Comment {
+  id        String   @id @default(uuid())
+  author    String   // Nombre del autor del comentario
+  text      String   // Texto del comentario
+  createdAt DateTime @default(now())
+  // Comentarios generales sobre el sistema o sesiones
+}
+
+model Resource {
+  id          String   @id @default(uuid())
+  title       String   // Título del recurso
+  url         String   // Enlace al material (PDF, video, etc.)
+  description String?  // Descripción opcional del recurso
+  uploadedBy  String   // Nombre o ID de quien lo sube
+  createdAt   DateTime @default(now())
+  // Recursos compartidos por alumnos o tutores
+}
