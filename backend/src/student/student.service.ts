@@ -15,14 +15,6 @@ export class StudentService extends PrismaClient implements OnModuleInit {
     });
   }
 
-  // src/session/session.service.ts
-getByStudent(studentId: string) {
-  return this.session.findMany({
-    where: { studentId },
-    orderBy: { scheduledAt: 'asc' }
-  });
-}
-
 
   findAll() {
     return this.student.findMany({

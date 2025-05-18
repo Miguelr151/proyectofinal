@@ -18,7 +18,7 @@ model Student {
   name      String
   email     String   @unique
   phone     String
-  pasword   String
+  password   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt()
   // Representa al estudiante que busca tutorías
@@ -30,7 +30,7 @@ model Tutor {
   email        String   @unique
   bio          String?     // Descripción opcional del tutor
   expertise    String      // Área de especialidad, ej: Matemáticas
-  pasword      String
+  password      String
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt()
   // Representa al tutor disponible para ayudar
@@ -42,6 +42,7 @@ model Session {
   tutorId    String   // ID del tutor
   topic      String   // Tema tratado en la sesión
   duration   String   // Duración de la sesión (ej. "30 minutos")
+  scheduledAt  DateTime
   createdAt  DateTime @default(now())
   // Representa una sesión de tutoría entre alumno y tutor
 }

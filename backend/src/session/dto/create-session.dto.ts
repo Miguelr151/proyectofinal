@@ -1,4 +1,4 @@
-import { IsString } from "class-validator"
+import { IsDateString, IsString } from "class-validator"
 
 export class CreateSessionDto {
     @IsString()
@@ -9,4 +9,6 @@ export class CreateSessionDto {
     topic:      string
     @IsString()
     duration:   string
+    @IsDateString()
+    scheduledAt: string
 }

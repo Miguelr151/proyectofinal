@@ -16,11 +16,23 @@ export class SessionController {
   findAll() {
     return this.sessionService.findAll();
   }
+  
+  @Get('tutor/:tutorId')
+getByTutor(@Param('tutorId') tutorId: string) {
+  return this.sessionService.getByTutor(tutorId);
+}
+
 
   @Get('')
   findOne() {
     return this.sessionService.findOne();
   }
+
+  @Get('/student/:id')
+getByStudent(@Param('id') id: string) {
+  return this.sessionService.getByStudent(id);
+}
+
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateSessionDto: UpdateSessionDto) {

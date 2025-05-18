@@ -51,8 +51,11 @@ export default function Navbar() {
         )}
 
         {rol === 'tutor' && (
-          <button onClick={() => router.push('/dashboard/tutor')} className="hover:underline">Dashboard Tutor</button>
-        )}
+  <>
+    <button onClick={() => router.push('/dashboard/tutor')} className="hover:underline">Dashboard Tutor</button>
+    <button onClick={() => router.push('/dashboard/tutor/session')} className="hover:underline">Mis Sesiones</button>
+  </>
+)}
       </div>
 
       {rol && (

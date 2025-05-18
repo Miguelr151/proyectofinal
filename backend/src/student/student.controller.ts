@@ -13,12 +13,6 @@ export class StudentController {
     return this.studentService.create(createStudentDto);
   }
 
-  // src/session/session.controller.ts
-@Get('student/:id')
-getByStudent(@Param('id') id: string) {
-  return this.sessionService.getByStudent(id);
-}
-
 
   @Get()
   findAll() {

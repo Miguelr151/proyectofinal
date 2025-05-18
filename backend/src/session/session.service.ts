@@ -8,17 +8,39 @@ export class SessionService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
     await this.$connect();
   }
-  create(createSessionDto: CreateSessionDto) {
-    return this.session.create({
-      data: createSessionDto
+
+create(createSessionDto: CreateSessionDto) {
+  const data = {
+    ...createSessionDto,
+    scheduledAt: new Date(createSessionDto.scheduledAt),
+  }
+
+  return this.session.create({
+    data,
+  })
+}
+
+getByTutor(tutorId: string) {
+  return this.session.findMany({
+    where: { tutorId },
+    orderBy: { scheduledAt: 'asc' }
+  });
+}
+
+
+  // ✅ MÉTODO AGREGADO: Obtener sesiones por estudiante
+  getByStudent(studentId: string) {
+    return this.session.findMany({
+      where: { studentId },
+      orderBy: { createdAt: 'asc' }, // O 'desc' si quieres ver las más recientes primero
     });
   }
 
   findAll() {
     return this.session.findMany({
-      orderBy:{
-        createdAt : 'desc'
-      }
+      orderBy: {
+        createdAt: 'desc',
+      },
     });
   }
 
@@ -28,12 +50,14 @@ export class SessionService extends PrismaClient implements OnModuleInit {
 
   update(id: string, updateSessionDto: UpdateSessionDto) {
     return this.session.update({
-      where : {id},
-      data : updateSessionDto
+      where: { id },
+      data: updateSessionDto,
     });
   }
 
   remove(id: string) {
-    return this.session.delete({where: {id}});
+    return this.session.delete({
+      where: { id },
+    });
   }
 }
