@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, OnModuleInit, NotFoundException, UnauthorizedException } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { PrismaClient } from '@prisma/client';
@@ -15,6 +15,16 @@ export class StudentService extends PrismaClient implements OnModuleInit {
     });
   }
 
+  async login(email: string, password: string) {
+    const student = await this.student.findFirst({ where: { email } });
+    if (!student) {
+      throw new NotFoundException('Estudiante no encontrado');
+    }
+    if (student.password !== password) {
+      throw new UnauthorizedException('Contraseña incorrecta');
+    }
+    return student;
+  }
 
   findAll() {
     return this.student.findMany({
@@ -24,8 +34,6 @@ export class StudentService extends PrismaClient implements OnModuleInit {
     });
   }
 
-  // 🔧 Corrección importante:
-  // Antes se retornaba un tutor, no un estudiante. Esto estaba mal.
   findOne(id: string) {
     return this.student.findUnique({
       where: { id }

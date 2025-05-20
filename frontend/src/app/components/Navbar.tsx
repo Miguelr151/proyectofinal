@@ -9,7 +9,7 @@ export default function Navbar() {
   const [isClient, setIsClient] = useState(false)
 
   useEffect(() => {
-    setIsClient(true) // evita renderizar en SSR
+    setIsClient(true)
     const user = localStorage.getItem('user')
     if (user) {
       try {
@@ -27,7 +27,7 @@ export default function Navbar() {
     router.push('/login')
   }
 
-  if (!isClient) return null // evita render en SSR
+  if (!isClient) return null
 
   return (
     <nav className="w-full bg-blue-700 text-white px-6 py-3 flex justify-between items-center">
@@ -44,18 +44,19 @@ export default function Navbar() {
           <>
             <button onClick={() => router.push('/dashboard/student')} className="hover:underline">Dashboard Estudiante</button>
             <button onClick={() => router.push('/dashboard/student/session')} className="hover:underline">Sesiones</button>
-            <button onClick={() => router.push('/dashboard/student/forum')} className="hover:underline">Foro</button>
-            <button onClick={() => router.push('/dashboard/student/resource')} className="hover:underline">Recursos</button>
-            <button onClick={() => router.push('/dashboard/student/comment')} className="hover:underline">Comentarios</button>
+            <button onClick={() => router.push('/dashboard/student/forum-message')} className="hover:underline">Foro</button>
+            <button onClick={() => router.push('/dashboard/resource')} className="hover:underline">Recursos</button>
           </>
         )}
 
         {rol === 'tutor' && (
-  <>
-    <button onClick={() => router.push('/dashboard/tutor')} className="hover:underline">Dashboard Tutor</button>
-    <button onClick={() => router.push('/dashboard/tutor/session')} className="hover:underline">Mis Sesiones</button>
-  </>
-)}
+          <>
+            <button onClick={() => router.push('/dashboard/tutor')} className="hover:underline">Dashboard Tutor</button>
+            <button onClick={() => router.push('/dashboard/tutor/session')} className="hover:underline">Mis Sesiones</button>
+            <button onClick={() => router.push('/dashboard/resource')} className="hover:underline">Recursos</button>
+            <button onClick={() => router.push('/dashboard/tutor/resource/new')} className="hover:underline">Subir Recurso</button>
+          </>
+        )}
       </div>
 
       {rol && (

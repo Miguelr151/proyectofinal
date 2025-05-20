@@ -1,4 +1,3 @@
-// student.controller.ts
 import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
@@ -13,6 +12,10 @@ export class StudentController {
     return this.studentService.create(createStudentDto);
   }
 
+  @Post('login')
+  login(@Body() body: { email: string; password: string }) {
+    return this.studentService.login(body.email, body.password);
+  }
 
   @Get()
   findAll() {

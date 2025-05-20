@@ -1,12 +1,16 @@
-import { IsString } from "class-validator"
+import { IsString, IsOptional } from 'class-validator'
 
 export class CreateResourceDto {
-    @IsString()
-    title:       string
-    @IsString()
-    url:         string
-    @IsString()
-    description: string
-    @IsString()
-    uploadedBy:  string
+  @IsString()
+  title: string
+
+  @IsString()
+  url: string
+
+  @IsOptional()
+  @IsString()
+  description?: string
+
+  @IsString()
+  uploadedBy: string
 }

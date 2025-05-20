@@ -9,38 +9,66 @@ export class SessionService extends PrismaClient implements OnModuleInit {
     await this.$connect();
   }
 
-create(createSessionDto: CreateSessionDto) {
-  const data = {
-    ...createSessionDto,
-    scheduledAt: new Date(createSessionDto.scheduledAt),
+  create(createSessionDto: CreateSessionDto) {
+    const data = {
+      ...createSessionDto,
+      scheduledAt: new Date(createSessionDto.scheduledAt),
+    };
+
+    return this.session.create({
+      data,
+    });
   }
 
-  return this.session.create({
-    data,
-  })
-}
-
-getByTutor(tutorId: string) {
-  return this.session.findMany({
-    where: { tutorId },
-    orderBy: { scheduledAt: 'asc' }
-  });
-}
-
-
-  // ✅ MÉTODO AGREGADO: Obtener sesiones por estudiante
-  getByStudent(studentId: string) {
-    return this.session.findMany({
-      where: { studentId },
-      orderBy: { createdAt: 'asc' }, // O 'desc' si quieres ver las más recientes primero
+  // 🔁 Para el TUTOR: traer nombre del estudiante
+  async getByTutor(tutorId: string) {
+    const sessions = await this.session.findMany({
+      where: { tutorId },
+      orderBy: { scheduledAt: 'asc' }
     });
+
+    const withStudentNames = await Promise.all(
+      sessions.map(async (s) => {
+        const student = await this.student.findUnique({
+          where: { id: s.studentId },
+          select: { name: true },
+        });
+        return {
+          ...s,
+          studentName: student?.name ?? 'Desconocido',
+        };
+      })
+    );
+
+    return withStudentNames;
+  }
+
+  // 🔁 Para el ESTUDIANTE: traer nombre del tutor
+  async getByStudent(studentId: string) {
+    const sessions = await this.session.findMany({
+      where: { studentId },
+      orderBy: { createdAt: 'asc' },
+    });
+
+    const withTutorNames = await Promise.all(
+      sessions.map(async (s) => {
+        const tutor = await this.tutor.findUnique({
+          where: { id: s.tutorId },
+          select: { name: true },
+        });
+        return {
+          ...s,
+          tutorName: tutor?.name ?? 'Desconocido',
+        };
+      })
+    );
+
+    return withTutorNames;
   }
 
   findAll() {
     return this.session.findMany({
-      orderBy: {
-        createdAt: 'desc',
-      },
+      orderBy: { createdAt: 'desc' },
     });
   }
 

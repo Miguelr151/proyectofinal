@@ -1,39 +1,31 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
-import { CreateResourceDto } from './dto/create-resource.dto';
-import { UpdateResourceDto } from './dto/update-resource.dto';
-import { PrismaClient } from '@prisma/client';
+import { Injectable, OnModuleInit } from '@nestjs/common'
+import { PrismaClient } from '@prisma/client'
+import { CreateResourceDto } from './dto/create-resource.dto'
+import { UpdateResourceDto } from './dto/update-resource.dto'
 
 @Injectable()
 export class ResourceService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
-    await this.$connect();
+    await this.$connect()
   }
-  create(createResourceDto: CreateResourceDto) {
-    return this.resource.create({
-      data: createResourceDto
-    });
+
+  create(dto: CreateResourceDto) {
+    return this.resource.create({ data: dto })
   }
 
   findAll() {
-    return this.resource.findMany({
-      orderBy: {
-        createdAt: 'desc'
-      }
-    });
+    return this.resource.findMany({ orderBy: { createdAt: 'desc' } })
   }
 
-  findOne() {
-    return this.resource.findFirst();
+  findOne(id: string) {
+    return this.resource.findUnique({ where: { id } })
   }
 
-  update(id: string, updateResourceDto: UpdateResourceDto) {
-    return this.resource.update({
-      where: {id},
-      data: updateResourceDto
-    });
+  update(id: string, dto: UpdateResourceDto) {
+    return this.resource.update({ where: { id }, data: dto })
   }
 
   remove(id: string) {
-    return this.resource.delete({where : {id}});
+    return this.resource.delete({ where: { id } })
   }
 }

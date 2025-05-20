@@ -9,7 +9,15 @@ export class TutorService extends PrismaClient implements OnModuleInit {
     await this.$connect();
   }
 
-  create(createTutorDto: CreateTutorDto) {
+  async create(createTutorDto: CreateTutorDto) {
+    const existing = await this.tutor.findUnique({
+      where: { email: createTutorDto.email },
+    });
+
+    if (existing) {
+      throw new Error('Este correo ya está registrado como tutor.');
+    }
+
     return this.tutor.create({
       data: createTutorDto,
     });
@@ -23,7 +31,6 @@ export class TutorService extends PrismaClient implements OnModuleInit {
     });
   }
 
-  // 🔧 CORREGIDO: usar findUnique con ID
   findOne(id: string) {
     return this.tutor.findUnique({
       where: { id },

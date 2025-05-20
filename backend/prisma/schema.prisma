@@ -58,11 +58,13 @@ model ForumMessage {
 
 model Comment {
   id        String   @id @default(uuid())
-  author    String   // Nombre del autor del comentario
-  text      String   // Texto del comentario
+  author    String
+  text      String
+  messageId String
   createdAt DateTime @default(now())
-  // Comentarios generales sobre el sistema o sesiones
 }
+
+
 
 model Resource {
   id          String   @id @default(uuid())
