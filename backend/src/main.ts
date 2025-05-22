@@ -9,6 +9,7 @@ async function bootstrap() {
     origin: 'http://localhost:3000', // frontend Next.js
     credentials: true,
   });
+  
 
   app.setGlobalPrefix('api/v1');
 

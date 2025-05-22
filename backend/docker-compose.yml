@@ -1,14 +1,12 @@
-version: "3.8"
-
 services:
   db:
     image: postgres:12-alpine
-    container_name: postgresdos_container
     ports:
       - "5432:5432"
     environment:
-      POSTGRES_PASSWORD: admin123
-      POSTGRES_USER: adminuser
-      POSTGRES_DB: sistema2
+      - POSTGRES_PASSWORD=admin123
+      - POSTGRES_USER=adminuser
+      - POSTGRES_DB=sistema2
     volumes:
       - ./postgres:/var/lib/postgresql/data
+    container_name: postgresdos_container 
